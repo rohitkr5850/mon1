@@ -1,0 +1,54 @@
+-- Query 1: Total salary paid in each department
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$departmentId",
+      totalSalary: { $sum: "$salary" }
+    }
+  }
+])
+
+-- Query 2: Employee details with department information
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",
+      localField: "departmentId",
+      foreignField: "_id",
+      as: "departmentDetails"
+    }
+  },
+  {
+    $unwind: "$departmentDetails"
+  }
+])
+
+-- Query 3: Employees earning more than ₹60,000
+db.employees.find({ salary: { $gt: 60000 } })
+
+-- Query 4: Average salary per department
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$departmentId",
+      averageSalary: { $avg: "$salary" }
+    }
+  }
+])
+
+-- Query 5: All employees with department details
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",
+      localField: "departmentId",
+      foreignField: "_id",
+      as: "departmentDetails"
+    }
+  },
+  {
+    $match: {
+      departmentDetails: { $ne: [] }
+    }
+  }
+])
