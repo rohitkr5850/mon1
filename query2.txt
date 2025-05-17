@@ -18,7 +18,7 @@ db.employees.aggregate([
       as: "departmentDetails"
     }
   },
-  {
+{
     $unwind: "$departmentDetails"
   }
 ])

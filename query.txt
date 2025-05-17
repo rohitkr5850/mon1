@@ -1,7 +1,7 @@
 -- Query 1: Find the total amount spent by each customer
 db.orders.aggregate([
   {
-    $group: {
+     $group: {
       _id: "$customerId",
       totalSpent: { $sum: "$amount" }
     }
